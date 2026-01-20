@@ -1227,7 +1227,7 @@ func (c *Control) sendE2TSubscriptionRequest(subs *Subscription, trans *Transact
 
 	subReqMsg := subs.SubReqMsg
 	subReqMsg.RequestId = subs.GetReqId().RequestId
-	subReqMsg.RequestId.Id = subs.GetReqId().RequestId
+	subReqMsg.RequestId.Id = int(subs.GetReqId().InstanceId)
 	trans.Mtype, trans.Payload, err = c.e2ap.PackSubscriptionRequest(subReqMsg)
 	if err != nil {
 		xapp.Logger.Error("SUBS-SubReq ASN1 pack error: %s", idstring(err, trans, subs, parentTrans))
@@ -1291,7 +1291,7 @@ func (c *Control) sendE2TSubscriptionDeleteRequest(subs *Subscription, trans *Tr
 
 	subDelReqMsg := &e2ap.E2APSubscriptionDeleteRequest{}
 	subDelReqMsg.RequestId = subs.GetReqId().RequestId
-	subDelReqMsg.RequestId.Id = subs.GetReqId().RequestId
+	subDelReqMsg.RequestId.Id = int(subs.GetReqId().InstanceId)
 	subDelReqMsg.FunctionId = subs.SubReqMsg.FunctionId
 	trans.Mtype, trans.Payload, err = c.e2ap.PackSubscriptionDeleteRequest(subDelReqMsg)
 	if err != nil {
@@ -1560,7 +1560,7 @@ func (c *Control) SendSubscriptionDeleteReq(subs *Subscription, e2SubsDelRequire
 	if subs.PolicyUpdate == false {
 		subDelReqMsg := &e2ap.E2APSubscriptionDeleteRequest{}
 		subDelReqMsg.RequestId = subs.GetReqId().RequestId
-		subDelReqMsg.RequestId.Id = subs.GetReqId().RequestId
+		subDelReqMsg.RequestId.Id = int(subs.GetReqId().InstanceId)
 		subDelReqMsg.FunctionId = subs.SubReqMsg.FunctionId
 		mType, payload, err := c.e2ap.PackSubscriptionDeleteRequest(subDelReqMsg)
 		if err != nil {
