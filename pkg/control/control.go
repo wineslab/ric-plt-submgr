@@ -1223,11 +1223,11 @@ func (c *Control) sendE2TSubscriptionRequest(subs *Subscription, trans *Transact
 	var err error
 	var event interface{} = nil
 	var timedOut bool = false
-	const ricRequestorId = 123
+	// const ricRequestorId = 123
 
 	subReqMsg := subs.SubReqMsg
 	subReqMsg.RequestId = subs.GetReqId().RequestId
-	subReqMsg.RequestId.Id = ricRequestorId
+	subReqMsg.RequestId.Id = subs.GetReqId().RequestId
 	trans.Mtype, trans.Payload, err = c.e2ap.PackSubscriptionRequest(subReqMsg)
 	if err != nil {
 		xapp.Logger.Error("SUBS-SubReq ASN1 pack error: %s", idstring(err, trans, subs, parentTrans))
@@ -1287,11 +1287,11 @@ func (c *Control) sendE2TSubscriptionDeleteRequest(subs *Subscription, trans *Tr
 	var err error
 	var event interface{}
 	var timedOut bool
-	const ricRequestorId = 123
+	// const ricRequestorId = 123
 
 	subDelReqMsg := &e2ap.E2APSubscriptionDeleteRequest{}
 	subDelReqMsg.RequestId = subs.GetReqId().RequestId
-	subDelReqMsg.RequestId.Id = ricRequestorId
+	subDelReqMsg.RequestId.Id = subs.GetReqId().RequestId
 	subDelReqMsg.FunctionId = subs.SubReqMsg.FunctionId
 	trans.Mtype, trans.Payload, err = c.e2ap.PackSubscriptionDeleteRequest(subDelReqMsg)
 	if err != nil {
@@ -1553,14 +1553,14 @@ func (c *Control) SendSubscriptionDeleteReq(subs *Subscription, e2SubsDelRequire
 		c.registry.mutex = new(sync.Mutex)
 	}
 
-	const ricRequestorId = 123
+	// const ricRequestorId = 123
 	xapp.Logger.Debug("Sending subscription delete due to restart. subId = %v", subs.ReqId.InstanceId)
 
 	// Send delete for every endpoint in the subscription
 	if subs.PolicyUpdate == false {
 		subDelReqMsg := &e2ap.E2APSubscriptionDeleteRequest{}
 		subDelReqMsg.RequestId = subs.GetReqId().RequestId
-		subDelReqMsg.RequestId.Id = ricRequestorId
+		subDelReqMsg.RequestId.Id = subs.GetReqId().RequestId
 		subDelReqMsg.FunctionId = subs.SubReqMsg.FunctionId
 		mType, payload, err := c.e2ap.PackSubscriptionDeleteRequest(subDelReqMsg)
 		if err != nil {
